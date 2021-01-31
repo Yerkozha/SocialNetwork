@@ -15,12 +15,18 @@ import s from "./Dialogs.module.css";
 const Dialogs = (props) => {
 
 
+    let addMessage = React.createRef();
+
+    let callback = () => {
+        let text = addMessage.current.value;
+        alert(text);
+    }
 
 
 
+    let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem name={d.name} id={d.id} />);
 
-let dialogsElements = props.dialogs.map( d =>  <DialogItem name={d.name} id={d.id} />);
-let messagesElements = props.messages.map( m => <Message message={m.name} id={m.id} />);
+    let messagesElements = props.dialogsPage.messages.map(m => <Message message={m.name} id={m.id} />);
 
 
 
@@ -31,7 +37,15 @@ let messagesElements = props.messages.map( m => <Message message={m.name} id={m.
 
             </div>
             <div className={s.messages}>
-               {messagesElements}
+                {messagesElements}
+            </div>
+            <div>
+                <textarea ref={addMessage}> Введите сообщение </textarea>
+            </div>
+            <div>
+                <button onClick={callback}>
+                    Отправить сообщение
+            </button>
             </div>
         </div>
     )
