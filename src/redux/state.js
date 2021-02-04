@@ -1,6 +1,10 @@
-
+const ADD_POST = 'ADD-POST';
+const UPDATE_NEW_POST_TEXT = 'UPPDATE-NEW-POST-TEXT';
+const SEND_MESSAGE = 'SEND_MESSAGE';
+const UPDATE_NEW_TEXT_BODY = 'UPDATE_NEW_TEXT_BODY';
 
 let store = {
+
     _state: {
 
         dialogsPage: {
@@ -15,7 +19,8 @@ let store = {
                 { id: 1, name: "Assalamaleikum" },
                 { id: 2, name: "Kalasin" },
                 { id: 3, name: "Kaidasin" }
-            ]
+            ],
+            newTextBody : ' '
 
         },
         profilePage: {
@@ -27,10 +32,18 @@ let store = {
         }
 
     },
+    _callSubscriber() {
+        console.log('');
+    }
+    ,
+
     getState() {
         return this._state;
     }
     ,
+    subscribe(observer) {
+        this._callSubscriber = observer;
+    },
     /*addPost() {
 
         let newPost = {
@@ -50,55 +63,90 @@ let store = {
         this._callSubscriber(this._state);
     }
     ,*/
-    subscribe(observer) {
-        this._callSubscriber = observer;
-    },
+
+
     _callSubscriber() {
         console.log('');
     }
     ,
+
     dispatch(action) {
-        if (action.type === 'ADD-POST'){
+
+        switch (action) {
+            case ADD_POST: let newPost = {
+                id: 1,
+                name: this._state.profilePage.newPostText,
+                likesCount: 4
+            }
+   
+                this._state.profilePage.posts.push(newPost);
+                this._state.profilePage.newPostText = '';
+                this._callSubscriber(this._state);
+                break;
+            case UPDATE_NEW_POST_TEXT:
+                this._state.profilePage.newPostText = action.newText;
+                this._callSubscriber(this._state); break;
+            case UPDATE_NEW_TEXT_BODY:
+                this._state.dialogsPage.newTextBody = action.newBody;
+                this._callSubscriber(this._state);
+                break;
+            case SEND_MESSAGE:
+                let newMessage = {
+                    id : 4,
+                    name : this._state.dialogsPage.newTextBody
+                }
+                this._state.dialogsPage.messages.push(newMessage)
+                this._state.dialogsPage.newTextBody = ''
+                this._callSubscriber(this._state);
+                break;
+
+            default: break;
+   
+   
+        }
+        /*
+        if (action.type === 'ADD-POST') {
             let newPost = {
                 id: 1,
                 name: this._state.profilePage.newPostText,
                 likesCount: 4
             }
 
-                this._state.profilePage.posts.push(newPost);
-                this._state.profilePage.newPostText = '  ';
-                this._callSubscriber(this._state);
-        }
-        else if(action.type === 'UPPDATE-NEW-POST-TEXT'){
-            this._state.profilePage.newPostText = action.newText;
+            this._state.profilePage.posts.push(newPost);
+            this._state.profilePage.newPostText = '';
             this._callSubscriber(this._state);
         }
-       /* switch (action) {
-            case "ADD-POST": let newPost = {
-                id: 1,
-                name: this._state.profilePage.newPostText,
-                likesCount: 4
-            }
-
-                this._state.profilePage.posts.push(newPost);
-                this._state.profilePage.newPostText = '  ';
-                this._callSubscriber(this._state);
-
-            case "UPPDATE-NEW-POST-TEXT":
-                this._state.profilePage.newPostText = action.newText;
-                this._callSubscriber(this._state);
-
-
+        else if (action.type === 'UPPDATE-NEW-POST-TEXT') {
+            this._state.profilePage.newPostText = action.newText;
+            this._callSubscriber(this._state);
         }*/
+
     }
 }
 
-export const actionCreatorAddPost = () => {
-    return { type: 'ADD-POST' };
-}
-export const actionCreatorUppDateNewPostText = (text) => {
-    return { type: 'UPPDATE-NEW-POST-TEXT', newText: text };
-    
-}
+export const actionCreatorAddPost = () => ({ type: ADD_POST })
+export const actionCreatorUppDateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, newText: text })
+export const actionCreatorSendMessage = () => ({ type: SEND_MESSAGE })
+export const actionCreatorUppDateNewTextBody = (body) => ({ type: UPDATE_NEW_TEXT_BODY, newBody: body })
+
+
 
 export default store;
+
+/* switch (action) {
+         case "ADD-POST": let newPost = {
+             id: 1,
+             name: this._state.profilePage.newPostText,
+             likesCount: 4
+         }
+
+             this._state.profilePage.posts.push(newPost);
+             this._state.profilePage.newPostText = '  ';
+             this._callSubscriber(this._state);
+
+         case "UPPDATE-NEW-POST-TEXT":
+             this._state.profilePage.newPostText = action.newText;
+             this._callSubscriber(this._state);
+
+
+     }*/
