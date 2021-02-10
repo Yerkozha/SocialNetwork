@@ -14,6 +14,7 @@ import s from "./Dialogs.module.css";
 
 
 const Dialogs = (props) => {
+   
     let state = props.state
     let newTextBody = React.createRef();
     let dialogsElements = state.dialogs.map(d => <DialogItem name={d.name} id={d.id} />);

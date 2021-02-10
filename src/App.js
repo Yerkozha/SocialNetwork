@@ -5,6 +5,7 @@ import Profile from './components/Profile/Profile';
 import DialogsContainer from './components/Dialogs/DialogsContainer.jsx';
 import './App.css';
 import { Route } from 'react-router-dom';
+import UsersContainer from './components/Users/UsersContainer';
 
 
 
@@ -19,10 +20,9 @@ debugger;
       <Header />
       <Navbar />
       <div className='app-wrapper-content'>
-        <Route path='/profile' render={()=> <Profile store = {props.store} 
-        newPostText={props.store.getState().profilePage.newPostText} />} />
-        <Route path='/dialogs' render={()=> <DialogsContainer store={props.store} 
-        newMessageBody={props.store.getState().dialogsPage.newMessageBody}/>} />
+        <Route path='/profile' render={()=> <Profile />} />
+        <Route path='/dialogs' render={()=> <DialogsContainer/>} />
+        <Route path='/users' render={()=> <UsersContainer /> } />
         
       </div>
 
